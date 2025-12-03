@@ -1,7 +1,4 @@
-<div align="center">
-
-# 🏛️ IPT-NET  
-### **Sistema de Gestión Institucional - .NET 8.0**
+# 🏛️ IPT-NET — Sistema de Gestión Institucional (TFI 2025)
 
 ![.NET 8.0](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)
 ![EF Core](https://img.shields.io/badge/EF%20Core-8.0-512BD4)
@@ -9,123 +6,133 @@
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?logo=csharp)
 ![WinForms](https://img.shields.io/badge/UI-WinForms-blue)
 
-**Sistema integral de gestión para Instituto Privado Tucuman.**
+Descripción
+-----------
+IPT-NET es una aplicación de escritorio desarrollada en WinForms sobre .NET 8, creada como Trabajo Final Integrador (TFI) para modernizar los procesos administrativos del Instituto Privado Tucumán. Integra gestión de ventas de indumentaria y cobro de cuotas de alumnos, con persistencia en SQL Server usando Entity Framework Core.
 
-</div>
+Características principales
+--------------------------
+- Gestión de stock e indumentaria (ABM, talles, talles por prenda).
+- Proceso de ventas con carrito, validación de stock y generación de comprobantes.
+- Gestión de alumnos (ABM) y generación automática de cuotas mensuales.
+- Cálculo de recargos por mora (5% acumulativo por vencimiento atrasado, configurable).
+- Generación simulada de códigos de barras para cuotas.
+- Arquitectura en capas con patrón MVP (Model–View–Presenter) y contenedor de DI (Unity).
+- Base de datos mediante EF Core (migrations) y soporte para SQL Server / LocalDB.
 
----
+Arquitectura y estructura del repo
+----------------------------------
+El proyecto está organizado por capas para separar responsabilidades:
 
-## 🎯 Propósito
+- TFI.Dominio/              — Entidades POCO y reglas de negocio (Alumno, Empleado, Venta, Cuota, Indumentaria, etc.)
+- TFI.AccesoADatos/         — DbContext (IPTNetContext), repositorios, migraciones (Entity Framework Core)
+- TFI.Vista/                — Interfaz (WinForms), Presentadores (MVP), DTOs y configuración (App.config)
 
-**IVC-NET** es una aplicación de escritorio desarrollada en **WinForms sobre .NET 8**, diseñada para modernizar procesos administrativos del instituto.  
-Integra dos dominios funcionales críticos:
+Requisitos
+----------
+- Visual Studio 2022 (17.8+) o Visual Studio 2022 Preview con soporte .NET 8
+- .NET 8.0 SDK
+- SQL Server 2019+, Express o LocalDB
+- Git
+- (Opcional) Package Manager Console en Visual Studio para migraciones
 
-- 🛒 **Venta de Indumentaria:** Gestión de stock, ventas, pagos y facturación.  
-- 💰 **Cobro de Cuotas:** Administración de alumnos, generación de cuotas, vencimientos y recargos automáticos.
+Instalación y puesta en marcha
+------------------------------
 
----
-
-## 🏗️ Arquitectura y Tecnologías
-
-El proyecto implementa una arquitectura en capas con patrón **MVP (Model–View–Presenter)**, lo que favorece el mantenimiento, la extensibilidad y la separación de responsabilidades.
-
-### 📁 Estructura del Proyecto
-
+1) Clonar el repositorio
 ```bash
-IVC-NET/
-├── TFI.Dominio/              # Entidades de dominio (POCOs) y reglas de negocio
-│   ├── Empleado.cs
-│   ├── Venta.cs, LineaDeVenta.cs, Pago.cs
-│   ├── Stock.cs, Indumentaria.cs
-│   └── Alumno.cs, Cuota.cs
-│
-├── TFI.AccesoADatos/         # Capa de persistencia (EF Core 8)
-│   ├── IPTNetContext.cs      # DbContext
-│   ├── Repositorio.cs        # Repository Pattern (genérico)
-│   └── Migrations/           # Historial de migraciones
-│
-└── TFI.Vista/                # UI y lógica de presentación (MVP)
-    ├── Vistas/               # Formularios WinForms
-    ├── Presentadores/        # Lógica de interacción
-    ├── DTOs/                 # Data Transfer Objects
-    └── App.config            # ConnectionStrings y configuración
-⚙️ Tecnologías Clave
-Framework: .NET 8.0 (C# 12)
+git clone https://github.com/Matiasvm1/IPT-NET.TFI-2025.git
+cd IPT-NET.TFI-2025
+```
 
-ORM: Entity Framework Core 8.0.11
+2) Abrir la solución en Visual Studio y seleccionar el proyecto TFI.Vista como proyecto de inicio.
 
-Base de Datos: SQL Server 2019+ / LocalDB
+3) Configurar cadena de conexión
+- Editar TFI.Vista/App.config o el archivo de configuración correspondiente y ajustar la connectionString para apuntar a tu servidor SQL.
 
-DI Container: Unity
-
-UI: WinForms con estilos personalizados
-
-🚀 Instalación y Puesta en Marcha
-1️⃣ Requisitos Previos
-Visual Studio 2022 (17.8+)
-
-.NET 8.0 SDK
-
-SQL Server (LocalDB / Express / Developer)
-
-Git
-
-2️⃣ Clonar el Repositorio
-bash
-Copiar código
-git clone https://github.com/tu-usuario/IVC-NET.git
-cd IVC-NET
-3️⃣ Configurar Cadena de Conexión
-Editar TFI.Vista/App.config:
-
-xml
-Copiar código
+Ejemplos:
+```xml
+<!-- SQL Server Express -->
 <add name="IvcDb"
      connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=IvcDb;Integrated Security=True;Encrypt=False;"
      providerName="System.Data.SqlClient" />
 
+<!-- LocalDB -->
 <add name="IvcDb"
      connectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=IvcDb;Integrated Security=True;"
      providerName="System.Data.SqlClient" />
-4️⃣ Crear Base de Datos (Migraciones)
-En Package Manager Console, seleccionar TFI.AccesoADatos como Proyecto predeterminado:
+```
 
-powershell
-Copiar código
-Update-Database
-5️⃣ Compilar y Ejecutar
-bash
-Copiar código
+4) Crear la base de datos (migraciones)
+- Usando Package Manager Console en Visual Studio:
+  - Establecer `TFI.AccesoADatos` como proyecto predeterminado en PMC.
+  - Ejecutar:
+  ```
+  Update-Database
+  ```
+- O usando dotnet-ef (si está instalado):
+  ```bash
+  dotnet ef database update --project TFI.AccesoADatos --startup-project TFI.Vista
+  ```
+
+5) (Opcional) Ejecutar seeders
+- Si el proyecto incluye un seeder para crear usuarios/empleados iniciales, habilitarlo o ejecutar la rutina correspondiente para crear al menos un usuario administrador.
+
+6) Compilar y ejecutar
+- Desde Visual Studio: F5
+- O por línea de comandos:
+```bash
 dotnet build
-O simplemente ejecutar F5 en Visual Studio (proyecto de inicio: TFI.Vista).
+# Ejecutar el proyecto de la UI desde Visual Studio o configurar el comando 'dotnet run' apuntando al proyecto TFI.Vista si aplica.
+```
 
-🧭 Uso del Sistema
-🔐 Inicio de Sesión
-El sistema requiere un usuario registrado en Empleados.
-Puede utilizarse uno creado manualmente o proveniente del Seeder (si está habilitado).
+Operación y notas de uso
+-----------------------
+- Inicio de sesión: el sistema requiere un empleado registrado. Si no hay usuarios, crear uno directamente en la base de datos o mediante el seeder.
+- Módulo Ventas:
+  - Buscar indumentaria por código o descripción.
+  - Seleccionar talle y cantidad; el sistema valida el stock en tiempo real.
+  - Al finalizar, se genera un comprobante y se decrementa el stock.
+- Módulo Cuotas:
+  - ABM de alumnos y generación automática de cuotas mensuales.
+  - Recargos aplican automáticamente por cuotas vencidas (configurable por constantes del dominio).
+  - Código de barras: funcionalidad de simulación para identificación.
 
-👕 Módulo de Ventas de Indumentaria
-Buscador: Filtrado por código o descripción.
+Tecnologías y librerías
+-----------------------
+- Plataforma: .NET 8 (C# 12)
+- UI: WinForms (MVP)
+- ORM: Entity Framework Core 8 (v8.0.11)
+- Base de datos: SQL Server 2019+ / LocalDB
+- DI: Unity
+- Herramientas: Visual Studio 2022, dotnet-ef (opcional)
 
-Carrito: Selección de talle/cantidad con validación instantánea de stock.
+Buenas prácticas y recomendaciones
+----------------------------------
+- Usar migraciones para versionar el esquema de la base de datos.
+- No subir credenciales en App.config (usar variables de entorno o secretos en producción).
+- Mantener la lógica de negocio en TFI.Dominio y la persistencia en TFI.AccesoADatos.
+- Es recomendable usar control de versiones de las migraciones en conjunto con los cambios en modelos.
 
-Check-out: Emite factura y descuenta automáticamente el inventario.
+Contribuir
+----------
+1. Fork del repositorio
+2. Crear rama con un nombre descriptivo: `feature/mi-cambio` o `fix/issue-123`
+3. Hacer commits claros y atómicos
+4. Crear Pull Request describiendo cambios y motivo
 
-🎓 Módulo de Gestión de Cuotas
-ABM de alumnos.
+Licencia
+--------
+Incluye aquí la licencia del proyecto (por ejemplo MIT). Si aún no se definió, se recomienda agregar un archivo LICENSE con la licencia deseada.
 
-Generación automática de cuotas mensuales.
+Contacto
+--------
+- Equipo: Grupo 6 – Diseño de Sistemas
+- Institución: UTN – Facultad Regional Tucumán
+- Autor del repositorio: Matiasvm1
 
-Recargos: Se aplica un 5% acumulativo por cada vencimiento atrasado.
-
-Código de barras: Generación simulada para identificación de cuotas.
-
-🧑‍💻 Créditos
-Proyecto: IPT-NET
-Equipo: Grupo 6 – Diseño de Sistemas
-Institución: UTN – Facultad Regional Tucumán
-Año: 2025
-
-<div align="center"></div> ```
+Agradecimientos
+---------------
+TFI desarrollado por el grupo para la cátedra y presentación de 2025. Cualquier mejora o reporte de errores es bienvenido.
 
 
