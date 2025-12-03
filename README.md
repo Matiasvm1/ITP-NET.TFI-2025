@@ -114,21 +114,12 @@ Buenas prácticas y recomendaciones
 - Mantener la lógica de negocio en TFI.Dominio y la persistencia en TFI.AccesoADatos.
 - Es recomendable usar control de versiones de las migraciones en conjunto con los cambios en modelos.
 
-Contribuir
-----------
-1. Fork del repositorio
-2. Crear rama con un nombre descriptivo: `feature/mi-cambio` o `fix/issue-123`
-3. Hacer commits claros y atómicos
-4. Crear Pull Request describiendo cambios y motivo
-
-Licencia
---------
-Incluye aquí la licencia del proyecto (por ejemplo MIT). Si aún no se definió, se recomienda agregar un archivo LICENSE con la licencia deseada.
-
 Contacto
 --------
 - Equipo: Grupo 6 – Diseño de Sistemas
 - Institución: UTN – Facultad Regional Tucumán
+- Comision: 3k4
+- Año: 2025
 - Autor del repositorio: Matiasvm1
 
 Agradecimientos
